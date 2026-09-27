@@ -1,0 +1,112 @@
+# =========================================================================
+# Soltrix - Root .gitignore
+# =========================================================================
+
+# -------------------------------------------------------------------------
+# Node / Frontend (React + Vite)
+# -------------------------------------------------------------------------
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Production / Build outputs
+dist/
+dist-ssr/
+**/dist/
+**/dist-ssr/
+.vercel/
+
+# Logs & Debugging
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*lint_report*
+
+# Environment and Secrets (keep example files tracked)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+**/.env
+**/.env.*
+!**/.env.example
+!.env.example
+
+# Vite and ESLint cache/temp files
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+.eslintcache
+
+# -------------------------------------------------------------------------
+# Java / Spring Boot (Maven)
+# -------------------------------------------------------------------------
+# Compiled class files
+*.class
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven build directory
+target/
+**/target/
+
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# Maven wrapper downloads (track properties and jar)
+.mvn/wrapper/maven-wrapper.jar
+!**/wrapper/maven-wrapper.properties
+!**/wrapper/maven-wrapper.jar
+
+# Database Dumps and Scripts
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+
+# -------------------------------------------------------------------------
+# IDEs, Editors, and OS Files
+# -------------------------------------------------------------------------
+# JetBrains
+.idea/
+*.iws
+*.iml
+*.ipr
+**/*.iml
+
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Eclipse
+.metadata
+.classpath
+.project
+.settings/
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
