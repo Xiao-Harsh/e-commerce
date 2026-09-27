@@ -1,91 +1,72 @@
 # 👟 Soltrix — Backend API
 
-An enterprise-ready REST API built with **Spring Boot 3.3**, utilizing **Spring Security & JWT** for stateless authentication, **Spring Data JPA** for data access, and **MySQL** for persistence.
+A clean and lightweight REST API built with **Spring Boot 3.3**, **Spring Security**, and **JJWT** for secure token-based authentication. Features self-contained in-memory data storage with zero external database requirements.
 
 ---
 
 ## 🛠️ Tech Stack & Key Libraries
-* **Framework**: Spring Boot 3.3.0
+
+* **Framework**: Spring Boot 3.3
 * **Security**: Spring Security & JJWT (JSON Web Token) v0.12.5
-* **ORM**: Spring Data JPA & Hibernate
-* **Database**: MySQL 8.x
-* **Utility**: Lombok (reduces boilerplate)
-* **Build tool**: Maven wrapper (`mvnw`)
+* **Storage**: In-Memory Thread-Safe Repositories
+* **Build Tool**: Maven Wrapper (`mvnw`)
+* **Container**: Docker (Multi-stage build)
 
 ---
 
-## 📁 Packages Structure
+## 📁 Package Structure
 
 ```text
-backend/src/main/java/com/Soltrix/
-├── admin/                  # Administrative tools and reporting logic
-├── auth/                   # JWT creation, claim parsing, and auth filters
-├── cart/                   # Shopping cart storage and computation
-├── category/               # Product category mapping
-├── config/                 # Security configs, CORS settings, password encoders
-├── controller/             # REST endpoints (exposing JSON APIs)
-├── dto/                    # Data Transfer Objects for clean request/response serialization
-├── entity/                 # Hibernate/JPA persistent database entities
-├── exception/              # Global custom exception handling controls
-├── order/                  # Customer order checkout, processing, and status management
-├── product/                # Inventory details, product retrieval, and searches
-├── repository/             # Spring Data JPA DB interface files
-├── security/               # UserDetailsService and authentication providers
+backend/src/main/java/com/soltrix/
+├── config/                 # Security, CORS, and password encoders
+├── controller/             # REST endpoints (/auth, /products, /cart, /orders, /wishlist...)
+├── dto/                    # Data Transfer Objects for request/response serialization
+├── entity/                 # Clean Java data models
+├── exception/              # Global custom exception handling
+├── repository/             # In-memory storage repositories
+├── security/               # JWT authentication filter & UserDetailsService
 ├── service/                # Business logic layer
-├── user/                   # User profiles and role permissions management
-├── util/                   # Utility helpers
-├── DatabaseSeeder.java     # Seeds mock shoes and default accounts on startup
-└── SoltrixApplication.java # Spring Boot application main class
+├── DatabaseSeeder.java     # Seeds sample products, categories, and test accounts on startup
+└── SoltrixApplication.java # Spring Boot application entry point
 ```
 
 ---
 
-## ⚙️ REST API Endpoints & Routes
-
-The application secures specific endpoints using JWT authorization headers.
+## ⚙️ Core REST API Endpoints
 
 | Endpoint | Method | Access | Description |
 | :--- | :---: | :---: | :--- |
-| `/api/auth/login` | `POST` | Public | Authenticates credentials, returns JWT |
-| `/api/auth/register` | `POST` | Public | Registers a new Customer user |
-| `/api/products` | `GET` | Public | Retrieves all active shoes in inventory |
-| `/api/products/{id}` | `GET` | Public | Retrieves detailed metadata of a specific shoe |
-| `/api/cart` | `GET` | Customer | Views active shopping cart |
-| `/api/cart/add` | `POST` | Customer | Adds an item or increments item quantity |
-| `/api/cart/remove/{id}` | `DELETE`| Customer | Removes an item from the cart |
-| `/api/orders` | `POST` | Customer | Submits a shipping form & executes checkout |
-| `/api/orders/my-orders`| `GET` | Customer | Lists past orders placed by the current customer |
-| `/api/admin/**` | `*` | Admin | Full product CRUD & order management console |
+| `/api/v1/auth/login` | `POST` | Public | Authenticate user and receive JWT |
+| `/api/v1/auth/signup` | `POST` | Public | Register a new customer account |
+| `/api/v1/products` | `GET` | Public | List products (supports `?search=` and `?category=`) |
+| `/api/v1/products/{id}` | `GET` | Public | Get detailed specifications of a product |
+| `/api/v1/cart` | `GET` | Customer | Get current user's shopping cart |
+| `/api/v1/cart/items` | `POST` | Customer | Add product to cart with size and quantity |
+| `/api/v1/cart/items/{id}` | `PUT` / `DELETE` | Customer | Update quantity or remove cart item |
+| `/api/v1/orders` | `POST` | Customer | Place an order with shipping address |
+| `/api/v1/orders` | `GET` | Customer | View customer order history |
+| `/api/v1/wishlist` | `GET` | Customer | View favorited shoes |
+| `/api/v1/wishlist/add/{id}` | `POST` | Customer | Add shoe to wishlist |
+| `/api/v1/wishlist/remove/{id}` | `DELETE` | Customer | Remove shoe from wishlist |
+| `/api/v1/admin/**` | `ALL` | Admin | Full product CRUD and order status management |
 
 ---
 
-## ⚡ Setup & Development
+## ⚡ Running Locally
 
-### 1. Database Connection Configuration
-Make sure your local MySQL instance is running. Configure credentials in `src/main/resources/application.properties`:
-```properties
-spring.datasource.username=YOUR_MYSQL_USERNAME
-spring.datasource.password=YOUR_MYSQL_PASSWORD
-```
-
-### 2. Launch the Application
-Run the boot task using the Maven Wrapper:
 ```bash
-# PowerShell
-.\mvnw spring-boot:run
-
-# Windows Command Prompt (CMD)
-mvnw spring-boot:run
-
-# Linux / macOS
+# Start backend using Maven wrapper
 ./mvnw spring-boot:run
 ```
+*(On Windows Command Prompt, use `mvnw spring-boot:run`)*
 
-The application is configured with `ddl-auto=create`, which creates the schema and executes `DatabaseSeeder.java` to pre-populate products, user accounts, and test scenarios.
+The server will start on **`http://localhost:8080`**.
 
-### 3. Production Build
-Compile and bundle the service into a single executable JAR file:
+---
+
+## 🐳 Docker Build
+
 ```bash
-.\mvnw clean package
+docker build -t soltrix-backend .
+docker run -p 8080:8080 soltrix-backend
 ```
-The compiled jar file is written to `target/backend-0.0.1-SNAPSHOT.jar`. Run it with `java -jar target/backend-0.0.1-SNAPSHOT.jar`.

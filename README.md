@@ -1,150 +1,117 @@
-# 👟 Soltrix — E-Commerce Shoe Platform
+# 👟 Soltrix — Modern Footwear E-Commerce Platform
 
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.0-green?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
-[![React](https://img.shields.io/badge/React-19.2-blue?style=for-the-badge&logo=react)](https://react.dev)
-[![Vite](https://img.shields.io/badge/Vite-8.0-purple?style=for-the-badge&logo=vite)](https://vite.dev)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0-38bdf8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-green?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
+[![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8-purple?style=for-the-badge&logo=vite)](https://vite.dev)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-38bdf8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue?style=for-the-badge&logo=docker)](https://www.docker.com)
 
-A modern, full-stack, and responsive e-commerce web application specialized in selling footwear. Engineered with a Spring Boot backend API and a fast React single-page application (SPA) powered by Vite.
+**Soltrix** is a full-stack, responsive e-commerce web application designed for footwear. Built with a modern **React 19** frontend and a self-contained **Spring Boot 3** REST API.
 
 ---
 
-## 🏗️ Architecture & Technology Stack
+## ✨ Features
 
-The application employs a decoupled client-server architecture with state-of-the-art framework capabilities.
+- **Cinematic Experience**: Nike-inspired hero slider, dynamic shoe platform showcase, and smooth micro-animations.
+- **Product Catalog**: Live search, category filters (Sneakers, Running, Casual, Formal), and detailed product pages.
+- **Cart & Checkout**: Interactive cart drawer, size selection, quantity controls, and multi-step checkout.
+- **Wishlist & Favorites**: Heart icons with instant state updates across all product cards and a dedicated wishlist page.
+- **User Authentication**: Secure JWT-based login and registration with customer and administrator roles.
+- **Admin Dashboard**: Full inventory management — add, edit, or delete shoes, and manage customer orders.
+- **Self-Contained Backend**: In-memory data storage with automatic data seeding on startup (zero external database setup required).
 
-```mermaid
-graph TD
-    classDef frontend fill:#cbe8ff,stroke:#38bdf8,stroke-width:2px,color:#1e293b;
-    classDef backend fill:#dcfce7,stroke:#22c55e,stroke-width:2px,color:#14532d;
-    classDef database fill:#fef9c3,stroke:#eab308,stroke-width:2px,color:#713f12;
+---
 
-    subgraph Frontend [Vite + React Client]
-        Client[Interactive SPA UI]:::frontend
-        Context[Auth & Cart State]:::frontend
-    end
+## 🛠️ Tech Stack
 
-    subgraph Backend [Spring Boot API Server]
-        Auth[JWT Filter / Spring Security]:::backend
-        Ctrl[REST Controllers]:::backend
-        Svc[Service Layer / Business Logic]:::backend
-        Repo[Spring Data JPA]:::backend
-    end
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 19, Vite, Tailwind CSS v4, Lucide Icons, Axios |
+| **Backend** | Spring Boot 3.3, Spring Security, JJWT (Token Authentication) |
+| **Data Storage** | Thread-safe in-memory storage (Zero DB configuration needed) |
+| **Deployment** | Vercel (Frontend) & Render via Docker (Backend) |
 
-    subgraph Database [Storage Layer]
-        DB[(MySQL Database)]:::database
-    end
+---
 
-    Client <-->|HTTP REST & JWT| Auth
-    Auth <--> Ctrl
-    Ctrl <--> Svc
-    Svc <--> Repo
-    Repo <-->|Hibernate O/R Mapping| DB
+## 🚀 Quick Start (Run Locally)
+
+### 1. Start the Backend
+Open a terminal and run:
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+*(On Windows Command Prompt, use `mvnw spring-boot:run`)*  
+The API server will start on **`http://localhost:8080`** and automatically seed 13 initial shoes, categories, and test accounts.
+
+### 2. Start the Frontend
+Open a second terminal and run:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Open **`http://localhost:5173`** in your browser.
+
+---
+
+## 🔑 Demo Login Accounts
+
+The system automatically creates these test accounts on startup:
+
+| Role | Email | Password | Permissions |
+|---|---|---|---|
+| **Customer** | `test1@gmail.com` | `customer123` | Browse, search, add to cart, wishlist, checkout |
+| **Admin** | `test@gmail.com` | `admin123` | Manage inventory (add/edit/delete shoes), track orders |
+
+---
+
+## 🌐 Deployment Guide
+
+### Deploy Frontend to [Vercel](https://vercel.com)
+1. Import this repository into Vercel.
+2. Set the **Root Directory** to `frontend`.
+3. In **Environment Variables**, add:
+   - `VITE_API_BASE_URL`: `https://your-backend.onrender.com/api/v1`
+4. Click **Deploy**.
+
+### Deploy Backend to [Render](https://render.com)
+1. Create a new **Web Service** on Render and connect this repository.
+2. Set the **Root Directory** to `backend`.
+3. Choose **Docker** as the runtime (Render will use `backend/Dockerfile`).
+4. In **Environment Variables**, add:
+   - `PORT`: `8080`
+   - `CORS_ALLOWED_ORIGINS`: `https://your-frontend.vercel.app,https://*.vercel.app,http://localhost:5173`
+5. Click **Create Web Service**.
+
+---
+
+## 📁 Project Structure
+
+```
+soltrix/
+├── frontend/                # React 19 SPA (Vite + Tailwind CSS)
+│   ├── src/
+│   │   ├── components/      # UI components (Navbar, Footer, ProductCard, etc.)
+│   │   ├── context/         # Auth and Cart state
+│   │   ├── pages/           # Home, Shop, ProductDetails, Checkout, Admin...
+│   │   └── services/        # Axios API client
+│   └── vercel.json          # Vercel SPA routing fallback
+│
+├── backend/                 # Spring Boot REST API
+│   ├── Dockerfile           # Multi-stage production container build
+│   └── src/main/java/com/soltrix/
+│       ├── controller/      # REST API endpoints (/auth, /products, /cart, /orders...)
+│       ├── entity/          # Clean Java data models
+│       ├── repository/      # In-memory storage repositories
+│       ├── security/        # JWT authentication filter & security config
+│       └── service/         # Business logic layer
+│
+└── README.md
 ```
 
-### 💻 Frontend
-* **React 19** & **Vite 8**: High-performance rendering engine and bundler with hot module replacement (HMR).
-* **Tailwind CSS v4**: Utility-first styling engine driving cohesive responsive design patterns.
-* **React Hook Form**: Performant, extensible form validation.
-* **Lucide React**: Clean and minimal modern vector icons.
-* **Axios**: Promised-based HTTP client interfacing with backend REST API.
-
-### ⚙️ Backend
-* **Spring Boot 3.3**: Enterprise-grade Java application framework.
-* **Spring Security & JJWT (0.12.5)**: Stateless session management securing REST endpoints with JSON Web Tokens.
-* **Spring Data JPA & Hibernate**: Object-relational mapping facilitating persistent MySQL storage.
-* **Lombok**: Boilerplate reduction library for cleaner model classes.
-* **MySQL Connector/J**: Official database connectivity driver.
-
 ---
 
-## ⚡ Quick Start Guide
+## 📄 License
 
-Follow these simple steps to launch the application locally or deploy to the cloud (zero database setup needed).
-
-### Step 1: Launch the Backend API Server
-
-The backend runs fully self-contained in-memory (no MySQL or database installation required).
-
-1. Open a **PowerShell** or terminal window.
-2. Navigate to the `backend` folder:
-   ```bash
-   cd backend
-   ```
-3. Boot up the Spring Boot server using the Maven wrapper:
-   ```powershell
-   .\mvnw spring-boot:run
-   ```
-4. The server will boot up and bind to **`http://localhost:8080`**. Initial products, categories, and accounts are automatically seeded into memory.
-
----
-
-### Step 2: Launch the Backend API Server
-
-The backend includes a Maven wrapper, eliminating the need to install Maven globally on your system.
-
-1. Open a new **PowerShell** window.
-2. Navigate to the `backend` folder:
-   ```powershell
-   cd backend
-   ```
-3. Boot up the Spring Boot server using the Maven wrapper:
-   ```powershell
-   .\mvnw spring-boot:run
-   ```
-   *(If you are running from standard Command Prompt (CMD), run `mvnw spring-boot:run` instead.)*
-4. The server will boot up and bind to **`http://localhost:8080`**.
-
----
-
-### Step 3: Launch the Frontend Web Client
-
-1. Open a **second** terminal window or tab.
-2. Navigate to the `frontend` folder:
-   ```powershell
-   cd frontend
-   ```
-3. Install the dependencies and initiate the Vite development server. If script execution policies restrict NPM scripts on your PowerShell session, execute commands directly via `npm.cmd`:
-   ```powershell
-   # Bypass Windows execution policies with npm.cmd
-   npm.cmd install
-   npm.cmd run dev
-   ```
-4. Once running, open your web browser and access the application at the port indicated in the terminal (typically **`http://localhost:5173`**).
-
----
-
-## 🔑 Default Test Accounts
-
-To facilitate instant evaluation, the database auto-seeds the following roles during first-time execution:
-
-### 👤 Customer Role
-* **Email:** `test1@gmail.com`
-* **Password:** `customer123`
-* **Features:** Search and filter catalog, inspect product details, manage cart, place orders, view order history.
-
-### 🔑 Administrator Role
-* **Email:** `test@gmail.com`
-* **Password:** `admin123`
-* **Features:** Full CRUD access over products (shoes) inventory, categorize products, browse all client orders, and update shipping/fulfillment states.
-
----
-
-## ❤️ Wishlist & Favorites Feature
-
-We have added a fully persistent, secure, and reactive **Wishlist & Favorites** module across the entire stack.
-
-### ⚙️ Backend REST APIs (Exposed under `/api/v1/wishlist` & `/api/wishlist`)
-All endpoints are secured behind custom JWT filter gates and map to the active logged-in User Principal:
-* **`GET /`** — Retrieves list of all wishlisted product entries with complete shoe specifications.
-* **`POST /add/{productId}`** — Safely persists a shoe to the user's wishlist (robustly prevents duplicates).
-* **`DELETE /remove/{productId}`** — Removes a shoe from the wishlist.
-* **`GET /check/{productId}`** — Utility check returning `true` or `false` indicating active favorited status.
-
-### 🎨 Frontend UI Integrations
-* **Dynamic Overlay Hearts**: Clickable heart fav icons positioned on top of catalog item cards ([ProductCard.jsx](file:///c:/Users/priyanshu/Downloads/Soltrix/frontend/src/components/common/ProductCard.jsx)) with real-time reactive global state updates.
-* **Product Details Action**: A premium outline/filled favoriting button nestled next to the "Add to Bag" element ([ProductDetails.jsx](file:///c:/Users/priyanshu/Downloads/Soltrix/frontend/src/pages/products/ProductDetails.jsx)).
-* **Navigation Header Badge**: A live navbar favoriting badge showing exact active counts ([Navbar.jsx](file:///c:/Users/priyanshu/Downloads/Soltrix/frontend/src/components/layout/Navbar.jsx)).
-* **Wishlist Screen**: A responsive favorites grid page ([Wishlist.jsx](file:///c:/Users/priyanshu/Downloads/Soltrix/frontend/src/pages/wishlist/Wishlist.jsx)) with clean empty-states.
-
+This project is licensed under the [MIT License](LICENSE).
