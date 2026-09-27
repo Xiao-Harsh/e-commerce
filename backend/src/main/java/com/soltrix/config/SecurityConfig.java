@@ -68,11 +68,14 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                // Health check endpoints
+                .requestMatchers("/health", "/api/v1/health", "/api/health").permitAll()
+                // Allow all HEAD requests for free uptime monitoring (UptimeRobot, Better Stack)
+                .requestMatchers(HttpMethod.HEAD, "/**").permitAll()
                 // Auth public endpoints
                 .requestMatchers("/api/v1/auth/**", "/api/auth/**").permitAll()
-                // Products public read access (GET and HEAD for health monitors)
+                // Products public read access
                 .requestMatchers(HttpMethod.GET, "/api/v1/products", "/api/v1/products/**", "/api/products", "/api/products/**").permitAll()
-                .requestMatchers(HttpMethod.HEAD, "/api/v1/products", "/api/v1/products/**", "/api/products", "/api/products/**").permitAll()
                 // Admin product writes
                 .requestMatchers(HttpMethod.POST, "/api/v1/products", "/api/v1/products/**", "/api/products", "/api/products/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/products", "/api/v1/products/**", "/api/products", "/api/products/**").hasRole("ADMIN")
