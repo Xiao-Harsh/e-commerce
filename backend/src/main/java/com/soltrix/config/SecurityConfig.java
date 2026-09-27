@@ -70,8 +70,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Auth public endpoints
                 .requestMatchers("/api/v1/auth/**", "/api/auth/**").permitAll()
-                // Products public read access
+                // Products public read access (GET and HEAD for health monitors)
                 .requestMatchers(HttpMethod.GET, "/api/v1/products", "/api/v1/products/**", "/api/products", "/api/products/**").permitAll()
+                .requestMatchers(HttpMethod.HEAD, "/api/v1/products", "/api/v1/products/**", "/api/products", "/api/products/**").permitAll()
                 // Admin product writes
                 .requestMatchers(HttpMethod.POST, "/api/v1/products", "/api/v1/products/**", "/api/products", "/api/products/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/products", "/api/v1/products/**", "/api/products", "/api/products/**").hasRole("ADMIN")
@@ -96,7 +97,7 @@ public class SecurityConfig {
                 .filter(origin -> !origin.isEmpty())
                 .collect(java.util.stream.Collectors.toList());
         configuration.setAllowedOriginPatterns(origins);
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control", "Accept", "X-Requested-With"));
         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
         configuration.setAllowCredentials(true);
