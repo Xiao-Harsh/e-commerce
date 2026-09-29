@@ -24,7 +24,6 @@ import AdminEditProduct from './pages/admin/AdminEditProduct';
 import AdminOrderManagement from './pages/admin/AdminOrderManagement';
 
 import { ProtectedRoute, AdminRoute } from './components/common/ProtectedRoute';
-import './App.css';
 
 function MainAppLayout() {
   return (

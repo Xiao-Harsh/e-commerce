@@ -4,7 +4,6 @@ import com.soltrix.dto.JwtResponse;
 import com.soltrix.dto.LoginRequest;
 import com.soltrix.dto.MessageResponse;
 import com.soltrix.dto.SignupRequest;
-import com.soltrix.entity.User;
 import com.soltrix.security.JwtTokenProvider;
 import com.soltrix.security.UserPrincipal;
 import com.soltrix.service.UserService;
@@ -33,7 +32,7 @@ public class AuthController {
     @PostMapping({"/signup", "/register"})
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         try {
-            User user = userService.registerUser(signUpRequest);
+            userService.registerUser(signUpRequest);
             return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

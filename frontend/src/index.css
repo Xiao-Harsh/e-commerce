@@ -137,10 +137,6 @@ body {
   letter-spacing: -0.04em;
 }
 
-.tracking-wide-editorial {
-  letter-spacing: 0.2em;
-}
-
 /* Custom Animation Utilities */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -157,17 +153,6 @@ body {
   to { transform: translateY(0); opacity: 1; }
 }
 
-@keyframes float {
-  0% { transform: translateY(0px) rotate(-10deg); }
-  50% { transform: translateY(-12px) rotate(-8deg); }
-  100% { transform: translateY(0px) rotate(-10deg); }
-}
-
-@keyframes slowZoom {
-  from { transform: scale(1); }
-  to { transform: scale(1.05); }
-}
-
 .animate-fadeIn {
   animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -178,10 +163,6 @@ body {
 
 .animate-slideDown {
   animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
 }
 
 .scrollbar-none::-webkit-scrollbar {
